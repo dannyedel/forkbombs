@@ -1,0 +1,10 @@
+#!/bin/bash
+IMAGE="debian:stable"
+set -exv
+(
+	cd build
+	cmake ..
+	cmake --build .
+	docker run -it --rm --kernel-memory 1m -m 16m -v "$(pwd):/build/:ro" \
+		"$IMAGE" "/build/c++/forkbomb-c++-threads"
+)
